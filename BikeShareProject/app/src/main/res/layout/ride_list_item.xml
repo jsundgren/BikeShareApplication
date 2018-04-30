@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="2dp"
+                android:weightSum="5"
+                android:background="@color/colorWhite">
+    <!-- Rider -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:weightSum="4">
+
+        <TextView
+            android:id="@+id/rider_header"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="@string/rider"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_marginRight="10dp"/>
+        <TextView
+            android:id="@+id/rider"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
+    <!-- Start point -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_weight="2"
+        android:weightSum="4"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/start_point_header"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="@string/start_text"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/start_point"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:autoSizeTextType="uniform"
+            android:layout_weight="2"/>
+
+        <TextView
+            android:id="@+id/startTime"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textSize="15sp"/>
+
+    </LinearLayout>
+
+    <!-- End point -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_weight="2"
+        android:orientation="vertical"
+        android:weightSum="4">
+
+        <TextView
+            android:id="@+id/end_point_header"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="@string/end_text"
+            android:textSize="20sp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/end_point"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:autoSizeTextType="uniform"/>
+
+        <TextView
+            android:id="@+id/endTime"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textSize="15sp"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+
+</LinearLayout>
