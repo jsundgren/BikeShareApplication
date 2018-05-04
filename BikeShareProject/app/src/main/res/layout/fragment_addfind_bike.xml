@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/colorWhite">
+
+            <!-- Button to start the BikeRegisterActivity -->
+            <Button
+                android:id="@+id/register_bike"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="@color/colorButton"
+                android:text="@string/add_bike"
+                android:textColor="@color/colorWhite"
+                android:layout_centerHorizontal="true"/>
+
+            <!-- Button to start the BikeListFragment-->
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="@color/colorButton"
+                android:layout_below="@+id/register_bike"
+                android:id="@+id/search_bike"
+                android:text="@string/search_bike"
+                android:textColor="@color/colorWhite"
+                android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>

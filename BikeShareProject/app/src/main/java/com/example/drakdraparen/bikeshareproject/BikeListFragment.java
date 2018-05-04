@@ -8,8 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -25,9 +23,7 @@ public class BikeListFragment extends Fragment implements Observer {
 
     private static BikesDB sharedBikes;
     private static final String LIST_TAG = "LIST_FRAGMENT";
-    private RecyclerView mBikesList;
     private BikeHoldAdapter mAdapter;
-    int distance = 0;
 
     @Override
     public  void onCreate(Bundle savedInstanceState){
@@ -38,9 +34,6 @@ public class BikeListFragment extends Fragment implements Observer {
 
     @Override
     public void update(Observable observable, Object data){
-        mAdapter.notifyDataSetChanged();
-    }
-    public void updateList(){
         mAdapter.notifyDataSetChanged();
     }
     public class BikeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -94,10 +87,10 @@ public class BikeListFragment extends Fragment implements Observer {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.fragment_list, container, false);
-        mBikesList = v.findViewById(R.id.list_recycler_view);
-        mBikesList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        RecyclerView bikesList = v.findViewById(R.id.list_recycler_view);
+        bikesList.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new BikeHoldAdapter(sharedBikes.getBikesDB());
-        mBikesList.setAdapter(mAdapter);
+        bikesList.setAdapter(mAdapter);
         return v;
     }
 }

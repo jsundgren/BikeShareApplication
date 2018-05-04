@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:weightSum="5">
+        <!-- Address header -->
         <TextView
             android:id="@+id/address"
             android:layout_width="0dp"
@@ -22,6 +23,7 @@
             android:textStyle="bold"
             android:layout_marginLeft="10dp"
             android:layout_weight="3"/>
+        <!-- Distance header -->
         <TextView
             android:id="@+id/distance_header"
             android:layout_width="0dp"
@@ -37,6 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:weightSum="5">
+        <!-- TextView showing the Bikelocation-->
         <TextView
             android:id="@+id/bike_location"
             android:layout_width="0dp"
@@ -46,7 +49,7 @@
             android:layout_marginLeft="10dp"
             />
 
-        <!-- Distance to User -->
+        <!-- TextView show the distance to User -->
         <TextView
             android:id="@+id/distance"
             android:layout_width="0dp"

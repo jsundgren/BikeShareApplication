@@ -4,13 +4,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -46,10 +43,6 @@ public class RideListFragment extends Fragment implements Observer {
         mAdapter.notifyDataSetChanged();
     }
 
-    public void updateList(){
-        mAdapter.notifyDataSetChanged();
-    }
-
     public class RideHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         RecyclerView mRecyclerView;
         private TextView mRiderTextView, mStartTextView, mEndTextView, mStartTimeTextView, mEndTimeTextView;
@@ -76,8 +69,7 @@ public class RideListFragment extends Fragment implements Observer {
 
         @Override
         public void onClick(View v){
-            int itemPosition = mRecyclerView.getChildLayoutPosition(v);
-            ((BikeInfo)getActivity()).setImage(itemPosition);
+            //Do nothing on click
         }
     }
 

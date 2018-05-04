@@ -2,6 +2,7 @@ package com.example.drakdraparen.bikeshareproject;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -16,6 +17,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -31,9 +33,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-import io.realm.Realm;
-import io.realm.RealmChangeListener;
-import io.realm.RealmResults;
 /**
  *  ###Map activity###
  *  This class handles the setup of the fragment holding the map. It also
@@ -42,7 +41,6 @@ import io.realm.RealmResults;
  **/
 public class BikeMapActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
     private GoogleMap mMap;
-    Realm realm;
     Location mLastLocation;
     private LocationManager locationManager;
     private FragmentManager fm = getSupportFragmentManager();
@@ -54,19 +52,38 @@ public class BikeMapActivity extends AppCompatActivity implements OnMapReadyCall
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private static BikesDB sBikesDB;
     List<Bike> activeBikes;
+    private boolean GPS_ACTIVE = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bike_map);
         sBikesDB = BikesDB.get(this);
         BikesDB.updateActivity(this);
+        BikeRegisterActivity.updateActivity(this);
+        EndRideFragment.updateActivity(this);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.abs_layout);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         getLocationPermission();
-        createFragment(new BikeListFragment(), R.id.fragment_container, null);
+        createFragment(new AddOrFindBikeFragment(), R.id.fragment_container, null);
         sBikesDB.setListener();
     }
+
+    /* Overrides the back-pressed function so the user cant use the back button while on the EndRideFragment */
+    @Override
+    public void onBackPressed(){
+        Fragment f = fm.findFragmentById(R.id.fragment_container);
+        if(f instanceof EndRideFragment){
+            Toast.makeText(this, "Please press the end ride button if you want to end the ride!", Toast.LENGTH_LONG).show();
+        }else{
+            super.onBackPressed();
+            startActivity(new Intent(BikeMapActivity.this, BikeShareActivity.class));
+            finish();
+        }
+    }
+
+    /* Init the map and checks permissions */
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         if (mLocationPermissionGranted) {
@@ -80,31 +97,36 @@ public class BikeMapActivity extends AppCompatActivity implements OnMapReadyCall
         }
         drawMarkers();
     }
+
+    /* Setup of the map fragment */
     public void initMap(){
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
+
+    /* Draw the Google Maps markers at the position of all the active bikes */
     public void drawMarkers() {
         activeBikes = sBikesDB.getActiveBikes();
         for (int i = 0; i < activeBikes.size(); i++) {
-            final MarkerOptions m = new MarkerOptions().position(activeBikes.get(i).getLocation()).title(activeBikes.get(i).getType()).snippet(activeBikes.get(i).getId());
-            mMap.addMarker(m);
+            mMap.addMarker(new MarkerOptions().position(activeBikes.get(i).getLocation()).title(activeBikes.get(i).getType()).snippet(activeBikes.get(i).getId()));
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
-                public boolean onMarkerClick(Marker marker) {
-                    marker.showInfoWindow();
-                    String id = marker.getSnippet();
-                    String a = getLocationAddress(marker.getPosition());
-                    Bundle bundle = new Bundle();
-                    bundle.putString("address", a);
-                    bundle.putString("id", id);
-                    createFragment(new StartRideFragment(), R.id.fragment_container, bundle);
-                    return true;
-                }
+                    public boolean onMarkerClick(Marker marker) {
+                        marker.showInfoWindow();
+                        String id = marker.getSnippet();
+                        String a = getLocationAddress(marker.getPosition());
+                        Bundle bundle = new Bundle();
+                        bundle.putString("address", a);
+                        bundle.putString("id", id);
+                        createFragment(new StartRideFragment(), R.id.fragment_container, bundle);
+                        return true;
+                    }
             });
         }
     }
+
+    /* Function to get the device location if the user accepts the runtime permission */
     private void getDeviceLocation(){
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         try{
@@ -129,9 +151,13 @@ public class BikeMapActivity extends AppCompatActivity implements OnMapReadyCall
             Log.e(MAP_TAG,"getDevicelocation: " + e.getMessage());
         }
     }
+
+    /* Moves the camera on the map (the view) */
     public void moveCamera(LatLng latlng, float zoom){
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng,zoom));
     }
+
+    /* Function to get the address of a location using lat/lng */
     public String getLocationAddress(LatLng latlng){
         List<Address> listAddress;
         String address = "";
@@ -146,6 +172,8 @@ public class BikeMapActivity extends AppCompatActivity implements OnMapReadyCall
         }
         return address;
     }
+
+    /* Get location permission from the user */
     private void getLocationPermission(){
         String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION};
         if(ContextCompat.checkSelfPermission(this.getApplicationContext(),FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
@@ -156,6 +184,8 @@ public class BikeMapActivity extends AppCompatActivity implements OnMapReadyCall
             ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
         }
     }
+
+    /* Checks if the user accept the GPS permission */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] granResults){
         mLocationPermissionGranted = false;
@@ -164,30 +194,46 @@ public class BikeMapActivity extends AppCompatActivity implements OnMapReadyCall
                 if(granResults.length > 0 && granResults[0] == PackageManager.PERMISSION_GRANTED){
                     mLocationPermissionGranted = true;
                     initMap();
+                }else{
+                    Toast.makeText(this, "This application need to use your location to find bikes close by", Toast.LENGTH_LONG).show();
+                    BikeMapActivity.super.finish();
                 }
             }
         }
     }
+
+    /* Gets called if the location changes */
     public void onLocationChanged(Location location) {
         mLastLocation = location;
         calcDistance();
     }
+
+    /* If the realm listener gets called, the map is cleard and the markers are redrawn */
     public void update(){
         if(mMap != null) {
             mMap.clear();
-            drawMarkers();
+            Fragment f = fm.findFragmentById(R.id.fragment_container);
+            if((f instanceof StartRideFragment) || (f instanceof BikeListFragment)){
+                drawMarkers();
+            }
         }
-        //Log.d(MAP_TAG, "UPDATE KALLAS");
     }
+    /* Get the address for the end location */
     public String getEndLocation(){
         return getLocationAddress(new LatLng(mLastLocation.getLatitude(),mLastLocation.getLongitude()));
     }
+    /* Get the coordinates for the end position */
     public LatLng getEndCoord(){
         return new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
     }
     public void onStatusChanged(String provider, int status, Bundle extras) {}
-    public void onProviderEnabled(String provider) {}
-    public void onProviderDisabled(String provider) {}
+    /* If the GPS is turned off */
+    public void onProviderEnabled(String provider) {GPS_ACTIVE = true;}
+    /* If the GPS is turned off */
+    public void onProviderDisabled(String provider) {GPS_ACTIVE = false;}
+    /* Getter for the GPS boolean*/
+    public boolean isGPSActive(){return GPS_ACTIVE;}
+    /* Calculate distance between user and active bikes */
     public void calcDistance(){
         activeBikes = sBikesDB.getActiveBikes();
         for(int i = 0; i < activeBikes.size(); i++){
@@ -198,6 +244,7 @@ public class BikeMapActivity extends AppCompatActivity implements OnMapReadyCall
             sBikesDB.update(activeBikes.get(i));
         }
     }
+    /* Setup fragments */
     public void createFragment(Fragment frag, int res, Bundle b){
         Fragment fragment = fm.findFragmentById(res);
         if(b != null) {

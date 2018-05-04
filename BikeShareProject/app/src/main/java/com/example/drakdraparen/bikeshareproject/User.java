@@ -1,11 +1,7 @@
 package com.example.drakdraparen.bikeshareproject;
 
-import android.content.Context;
-import android.util.Log;
 
-import java.util.Observable;
 import java.util.UUID;
-
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
@@ -19,11 +15,15 @@ public class User extends RealmObject{
     private String mID;
     @Required
     private String mName;
+    @Required
+    private byte [] mUserProfilePic;
     private int mBalance;
-    public User(String name, int balance){
+
+    public User(String name, int balance, byte[] userProfilePic){
         mID = UUID.randomUUID().toString();
         mName = name;
         mBalance = balance;
+        mUserProfilePic = userProfilePic;
     }
     public User(){}
     public String getMName(){return mName;}
@@ -33,4 +33,5 @@ public class User extends RealmObject{
         getRealm().commitTransaction();
     }
     public int getMBalance(){return mBalance;}
+    public byte [] getMUserProfilePic(){return mUserProfilePic;};
 }

@@ -4,6 +4,16 @@
              android:layout_height="match_parent"
              android:background="@color/colorWhite"
              tools:context="com.example.drakdraparen.bikeshareproject.EndRideFragment">
+    <!-- Timer -->
+    <Chronometer
+        android:id="@+id/chronometer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/end_ride"
+        android:layout_centerHorizontal="true"
+        android:textSize="42sp"/>
+
+    <!-- Button to end ride -->
     <Button
         android:layout_width="150dp"
         android:layout_height="wrap_content"

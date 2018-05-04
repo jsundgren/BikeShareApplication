@@ -2,14 +2,9 @@ package com.example.drakdraparen.bikeshareproject;
 
 import android.content.Context;
 import android.util.Log;
-
-import java.util.ArrayList;
 import java.util.Observable;
-
 import io.realm.OrderedRealmCollection;
 import io.realm.Realm;
-import io.realm.RealmResults;
-
 /**
  *  ###RIDESDB CLASS###
  *  This class handles the functions for the database holding all the rides.
@@ -39,7 +34,7 @@ public class RidesDB extends Observable {
         return sRealm.where(Ride.class).equalTo("mBikeID", id).findAll();
     }
 
-    // Starting a new ride, adding the name and start point of the rider to an object of type Ride
+    /* Starting a new ride, adding the name and start point of the rider to an object of type Ride */
     public synchronized void addRide(String user, String startlocation, String startTime, String id) {
         mRide.setMRider(user);
         mRide.setMstartRide(startlocation);
@@ -47,11 +42,11 @@ public class RidesDB extends Observable {
         mRide.setMBikeID(id);
     }
 
-    // Ending a ride, adding the endpoint to the current object and then add it to mallrides
-    public synchronized void endRide(String where, String endTime, byte [] pic) {
+    /* Ending a ride, adding the endpoint to the current object and then add it to mallrides */
+    public synchronized void endRide(String where, String endTime, int priceForRide) {
         mRide.setMendRide(where);
         mRide.setMendTime(endTime);
-        mRide.setMBikeImage(pic);
+        mRide.setPriceForRide(priceForRide);
         addFullRide(mRide);
         mRide = new Ride("", "", "", "");
         this.setChanged();
@@ -69,10 +64,6 @@ public class RidesDB extends Observable {
         });
         this.setChanged();
         notifyObservers();
-    }
-
-    public synchronized boolean active() {
-        return (!mRide.getMRider().equals("")) && (!mRide.getMstartRide().equals(""));
     }
 
     private RidesDB(Context context) {

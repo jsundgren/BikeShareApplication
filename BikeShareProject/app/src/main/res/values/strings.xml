@@ -8,5 +8,10 @@
     <string name="start_text">Started:</string>
     <string name="end_text">Ended:</string>
     <string name="rider">Rider:</string>
-    <string name="directionsApiKey">AIzaSyDLIWygMT4H8XeJl6PkI3pZvlpHjJPb-iQ</string>
+    <string name="refill_button">Refill</string>
+    <string name="user_balance">Balance:</string>
+    <string name="add_bike">Add Bike</string>
+    <string name="search_bike">Find Bike</string>
+    <string name="bike_type_header">Bike type:</string>
+    <string name="bike_price_header">Bike price (/h):</string>
 </resources>

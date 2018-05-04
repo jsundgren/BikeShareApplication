@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+    <!-- Type of bike -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:id="@+id/add_bike_type_header"
+        android:text="@string/bike_type_header"
+        />
+
+    <EditText
+        android:id="@+id/add_bike_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_below="@+id/add_bike_type_header"
+        android:layout_marginTop="20dp"/>
+
+    <!-- Price of the bike per hour -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_bike_price_header"
+        android:text="@string/bike_price_header"
+        android:textSize="24sp"
+        android:layout_below="@+id/add_bike_type"
+        android:layout_marginTop="20dp"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_bike_price"
+        android:textSize="14sp"
+        android:layout_below="@+id/add_bike_price_header"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"/>
+
+    <!-- ImageButton to start the camera -->
+    <ImageButton
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/ic_camera_button"
+        android:id="@+id/add_pic"
+        android:background="@color/colorButton"
+        android:textSize="24sp"
+        android:layout_below="@+id/add_bike_price"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"/>
+
+    <!-- Button to add the bike -->
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_bike"
+        android:textSize="24sp"
+        android:text="@string/add_bike"
+        android:background="@color/colorButton"
+        android:layout_below="@+id/add_pic"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/colorWhite"/>
+</RelativeLayout>

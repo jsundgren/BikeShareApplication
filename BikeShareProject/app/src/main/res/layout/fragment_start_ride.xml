@@ -3,14 +3,17 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@color/colorWhite">
+
+    <!-- TextView for the start location -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:id="@+id/start_location"
         android:textSize="24dp"
-        android:textAlignment="center"
-        />
+        android:textAlignment="center"/>
+
+    <!-- Button to start a ride -->
     <Button
         android:id="@+id/start_ride_button"
         android:layout_width="150dp"
@@ -23,13 +26,15 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"/>
 
-    <ImageView
+    <!-- Info button -->
+    <ImageButton
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_below="@+id/start_ride_button"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
         android:scaleType="centerCrop"
+        android:background="@null"
         android:id="@+id/bike_infomation"
         android:src="@drawable/ic_info"/>
 </RelativeLayout>
